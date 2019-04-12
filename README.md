@@ -1,6 +1,6 @@
 # BattleTank
 An open-world head-to-head tank fight with simple AI, terrain and advanced control system in Unreal 4
 
-##List of significatn asstes in game:
+## List of significatn asstes in game:
  * None. So far.
 
