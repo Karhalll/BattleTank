@@ -20,6 +20,18 @@ public:
 	virtual void Tick( float DeltaTime ) override;
 	
 private:
+	UPROPERTY(EditAnywhere)
+		float CrossHairXLocation = 0.5f;
+
+	UPROPERTY(EditAnywhere)
+		float CrossHairYLocation = 0.33333f;
+
+	UPROPERTY(EditAnywhere)
+		float LineTraceRange = 1000000.0;
+
 	ATank* GetControlledTank() const;
 	void AimTowardsCrosshair();
+	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
 };
