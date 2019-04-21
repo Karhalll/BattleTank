@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright FukasD Inc.
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
@@ -8,6 +7,7 @@
 #include "BattleTank.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -18,17 +18,11 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
+void UTankAimingComponent::Initialise(UTankBarrel* BarelToSet, UTankTurret* TurretToSet)
 {
-	if (!BarrelToSet) { return; }
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
-{
-	if (!TurretToSet) { return; }
+	Barrel = BarelToSet;
 	Turret = TurretToSet;
+
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
@@ -69,10 +63,33 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 {
+	if (!Barrel || !Turret) { return; }
 	// Work-out difference between current barrel rotation and AimDirection
-	auto TurretRotation = Turret->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAsRotator - TurretRotation;
+	float TurretRotation = To360(Turret->GetForwardVector().Rotation().Yaw);
+	float AimAsRotator = To360(AimDirection.Rotation().Yaw);
+	
+	float DeltaRotator = AimAsRotator - TurretRotation;
 
-	Turret->Rotate(DeltaRotator.Yaw);
+	if (DeltaRotator > 180.f)
+	{
+		DeltaRotator -= 360.f;
+	}
+
+	if (((270.f < TurretRotation) && (TurretRotation < 360.f)) && ((0.f < AimAsRotator) &&  (AimAsRotator < 90.f)))
+	{
+		DeltaRotator = -DeltaRotator;
+	}
+
+	Turret->Rotate(DeltaRotator);
+}
+
+float UTankAimingComponent::To360(float Number)
+{
+	float Number2 = Number;
+	if(Number2 < 0)
+	{
+		Number2 += 360.f;
+		return Number2;
+	}
+	return Number2;
 }
