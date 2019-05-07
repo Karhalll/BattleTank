@@ -2,7 +2,6 @@
 
 
 #include "TankTrack.h"
-#include "BattleTank.h"
 
 void UTankTrack::SetThrottle(float Throttle)
 {

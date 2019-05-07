@@ -2,7 +2,6 @@
 
 
 #include "TankTurret.h"
-#include "BattleTank.h"
 
 void UTankTurret::Rotate(float RelativeSpeed)
 {
