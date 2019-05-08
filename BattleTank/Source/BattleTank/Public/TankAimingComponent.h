@@ -57,9 +57,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 10000;
 
-	
-
-	float To360(float Number);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float ReloadTimeInSeconds = 3;

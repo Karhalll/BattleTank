@@ -95,33 +95,18 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 {
 	if (!ensure(Barrel) || !ensure(Turret)) { return; }
 	// Work-out difference between current barrel rotation and AimDirection
-	float TurretRotation = To360(Turret->GetForwardVector().Rotation().Yaw);
-	float AimAsRotator = To360(AimDirection.Rotation().Yaw);
-	
-	float DeltaRotator = AimAsRotator - TurretRotation;
+	auto TurretRotation = Turret->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - TurretRotation;
 
-	if (DeltaRotator > 180.f)
+	if (FMath::Abs(DeltaRotator.Yaw) < 180.f)
 	{
-		DeltaRotator -= 360.f;
+		Turret->Rotate(DeltaRotator.Yaw);
 	}
-
-	if (((270.f < TurretRotation) && (TurretRotation < 360.f)) && ((0.f < AimAsRotator) &&  (AimAsRotator < 90.f)))
+	else 
 	{
-		DeltaRotator = -DeltaRotator;
+		Turret->Rotate(-DeltaRotator.Yaw);
 	}
-
-	Turret->Rotate(DeltaRotator);
-}
-
-float UTankAimingComponent::To360(float Number)
-{
-	float Number2 = Number;
-	if(Number2 < 0)
-	{
-		Number2 += 360.f;
-		return Number2;
-	}
-	return Number2;
 }
 
 void UTankAimingComponent::Fire()

@@ -23,7 +23,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float TrackMaxDrivingForce = 20000000; // 1g acceleration
 
-private:
+//private:
 	UTankTrack();
 
 	virtual void BeginPlay() override;
