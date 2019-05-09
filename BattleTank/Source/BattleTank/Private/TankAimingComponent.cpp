@@ -6,6 +6,7 @@
 #include "Projectile.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -13,6 +14,8 @@ UTankAimingComponent::UTankAimingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true; 
+	static ConstructorHelpers::FClassFinder<AProjectile> ProjectileBP(TEXT("Blueprint'/Game/Projectile/Projectile_BP.Projectile_BP_C'"));
+	ProjectileBlueprint = ProjectileBP.Class;
 
 	// ...
 }
@@ -142,7 +145,7 @@ EFiringStatus UTankAimingComponent::GetFiringState() const
 	return FiringStatus;
 }
 
-int UTankAimingComponent::GetRoundsLeft() const
+int32 UTankAimingComponent::GetRoundsLeft() const
 {
 	return RoundsLeft;
 }
